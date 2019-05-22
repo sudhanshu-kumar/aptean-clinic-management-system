@@ -46,7 +46,7 @@ const deletePatientById = async id => {
 const validatePatient = patient => {
   const schema = {
     tokenId: Joi.number(),
-    pLastName: Joi.string().min(3),
+    pLastName: Joi.string().min(3).required(),
     pFisrstName: Joi.string().min(3),
     age: Joi.number(),
     sex: Joi.string().min(1),
