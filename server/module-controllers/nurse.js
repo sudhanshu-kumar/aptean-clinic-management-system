@@ -1,0 +1,65 @@
+const Joi = require("joi");
+const nurseObj = require("../modules/nurse");
+
+const getNurses = async () => {
+  const nurse = await nurseObj.Nurse.find({});
+  return nurse;
+};
+
+const addNurse = nurse => {
+  const newNurse = new nurseObj.Nurse(nurse);
+  newNurse.save();
+  return newNurse;
+};
+
+const getNurseById = async id => {
+  const nurse = await nurseObj.Nurse.findOne({ _id: id });
+  return nurse;
+};
+
+const getNurseByUserName = async userName => {
+  const nurse = await nurseObj.Nurse.findOne({ nUserName: userName });
+  return nurse;
+};
+
+const updateNurseById = async (id, reqBody) => {
+  const nurse = await nurseObj.Nurse.findOneAndUpdate(
+    {
+      _id: id
+    },
+    {
+      $set: reqBody
+    },
+    { new: true }
+  );
+  return nurse;
+};
+
+const deleteNurseById = async id => {
+  const nurse = await nurseObj.Nurse.findOneAndRemove({
+    _id: id
+  });
+  return nurse;
+};
+
+// ======================Nurse validation====================
+const validateNurse = nurse => {
+  const schema = {
+    nName: Joi.string().min(3),
+    nUserName: Joi.string().min(3),
+    nPassword: Joi.string(),
+    nEmail: Joi.string().email(),
+    nPhone: Joi.string().length(10)
+  };
+  return Joi.validate(nurse, schema);
+};
+
+module.exports = {
+  getNurses,
+  addNurse,
+  getNurseById,
+  getNurseByUserName,
+  updateNurseById,
+  deleteNurseById,
+  validateNurse
+};
