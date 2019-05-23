@@ -18,11 +18,6 @@ const getAppointmentById = async id => {
   return appointment;
 };
 
-const getAppointmentByUserName = async userName => {
-  const appointment = await appointmentObj.Appointment.findOne({ nUserName: userName });
-  return appointment;
-};
-
 const updateAppointmentById = async (id, reqBody) => {
   const appointment = await appointmentObj.Appointment.findOneAndUpdate(
     {
@@ -60,7 +55,6 @@ module.exports = {
   getAppointments,
   addAppointment,
   getAppointmentById,
-  getAppointmentByUserName,
   updateAppointmentById,
   deleteAppointmentById,
   validateAppointment
