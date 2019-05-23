@@ -2,8 +2,8 @@ const Joi = require("joi");
 const nurseObj = require("../modules/nurse");
 
 const getNurses = async () => {
-  const nurse = await nurseObj.Nurse.find({});
-  return nurse;
+  const nurses = await nurseObj.Nurse.find({});
+  return nurses;
 };
 
 const addNurse = nurse => {

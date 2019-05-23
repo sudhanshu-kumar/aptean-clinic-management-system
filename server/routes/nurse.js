@@ -98,6 +98,7 @@ app.delete("/api/nurses/:nurseId", async (request, response) => {
   try {
     const nurse = await nurseObj
       .deleteNurseById(request.params.nurseId)
+      .then(() => response.status(204).send("deleted successfully"))
       .catch(() => {
         response.status(404).send("Requested id not found");
       });
