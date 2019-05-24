@@ -18,9 +18,9 @@ const getDoctorById = async id => {
 };
 
 const getDoctorByUserName = async userName => {
-    const doctor = await doctorObj.Doctor.findOne({ dUserName: userName });
-    return doctor;
-  };
+  const doctor = await doctorObj.Doctor.findOne({ userName });
+  return doctor;
+};
 
 const updateDoctorById = async (id, reqBody) => {
   const doctor = await doctorObj.Doctor.findOneAndUpdate(
@@ -45,13 +45,13 @@ const deleteDoctorById = async id => {
 // ======================Doctor validation====================
 const validateDoctor = doctor => {
   const schema = {
-    dName: Joi.string().min(3),
-    dUserName: Joi.string().min(3),
-    dPassword: Joi.string(),
-    dEmail: Joi.string().email(),
-    dPhone: Joi.string().length(10),
-    dSpeciality: Joi.string().min(3),
-    dFee: Joi.number(),
+    name: Joi.string().min(3),
+    userName: Joi.string().min(3),
+    password: Joi.string(),
+    email: Joi.string().email(),
+    phone: Joi.string().length(10),
+    speciality: Joi.string().min(3),
+    fee: Joi.number(),
     availabilityTimes: Joi.string()
   };
   return Joi.validate(doctor, schema);

@@ -25,8 +25,8 @@ app.post("/api/doctors", async (request, response) => {
     if (error) {
       response.status(400).send(error.details[0].message);
     } else {
-      request.body.dPassword = await bcrypt.hash(
-        request.body.dPassword,
+      request.body.password = await bcrypt.hash(
+        request.body.password,
         BCRYPT_SALT_ROUNDS
       );
       const newDoctor = doctorObj.addDoctor(request.body);
@@ -40,15 +40,15 @@ app.post("/api/doctors", async (request, response) => {
 //=====================Login Doctor===========================
 app.post("/api/doctors/login", async (request, response) => {
   try {
-    const doctor = await doctorObj.getDoctorByUserName(request.body.dUserName);
+    const doctor = await doctorObj.getDoctorByUserName(request.body.userName);
     if (doctor === null)
       response.status(400).send("No Doctor found with the given UserName");
     const samePassword = await bcrypt.compare(
-      request.body.dPassword,
-      doctor.dPassword
+      request.body.password,
+      doctor.password
     );
     if (!samePassword) response.status(403).send("password incorrect");
-    response.send("password matched");
+    response.json(doctor);
   } catch (err) {
     response.status(500).send("Something went wrong, please try again..!!!");
   }

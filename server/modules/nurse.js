@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const nurseSchema = new mongoose.Schema(
   {
-    nName: { type: String },
-    nUserName: { type: String },
-    nPassword: { type: String },
-    nEmail: { type: String },
-    nPhone: { type: String }
+    name: { type: String },
+    userName: { type: String },
+    password: { type: String },
+    email: { type: String },
+    phone: { type: String }
   },
   { timestamps: true }
 );

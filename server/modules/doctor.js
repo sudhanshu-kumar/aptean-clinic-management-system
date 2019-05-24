@@ -2,13 +2,13 @@ const mongoose = require("mongoose");
 
 const doctorSchema = new mongoose.Schema(
   {
-    dName: { type: String },
-    dUserName: { type: String },
-    dPassword: { type: String },
-    dEmail: { type: String },
-    dPhone: { type: String },
-    dSpeciality: { type: String },
-    dFee: { type: Number },
+    name: { type: String },
+    userName: { type: String },
+    password: { type: String },
+    email: { type: String },
+    phone: { type: String },
+    speciality: { type: String },
+    fee: { type: Number },
     availabilityTimes: { type: String }
   },
   { timestamps: true }
@@ -16,5 +16,5 @@ const doctorSchema = new mongoose.Schema(
 const Doctor = mongoose.model("doctor", doctorSchema);
 
 module.exports = {
-    Doctor
+  Doctor
 };

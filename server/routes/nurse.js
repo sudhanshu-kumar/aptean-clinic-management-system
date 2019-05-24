@@ -25,8 +25,8 @@ app.post("/api/nurses", async (request, response) => {
     if (error) {
       response.status(400).send(error.details[0].message);
     } else {
-      request.body.nPassword = await bcrypt.hash(
-        request.body.nPassword,
+      request.body.password = await bcrypt.hash(
+        request.body.password,
         BCRYPT_SALT_ROUNDS
       );
       const newNurse = nurseObj.addNurse(request.body);
@@ -40,12 +40,12 @@ app.post("/api/nurses", async (request, response) => {
 //=====================Login Nurse===========================
 app.post("/api/nurses/login", async (request, response) => {
   try {
-    const nurse = await nurseObj.getNurseByUserName(request.body.nUserName);
+    const nurse = await nurseObj.getNurseByUserName(request.body.userName);
     if (nurse === null)
       response.status(400).send("No Nurse found with the given UserName");
     const samePassword = await bcrypt.compare(
-      request.body.nPassword,
-      nurse.nPassword
+      request.body.password,
+      nurse.password
     );
     if (!samePassword) response.status(403).send("password incorrect");
     response.send("password matched");

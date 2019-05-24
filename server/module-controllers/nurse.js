@@ -18,7 +18,7 @@ const getNurseById = async id => {
 };
 
 const getNurseByUserName = async userName => {
-  const nurse = await nurseObj.Nurse.findOne({ nUserName: userName });
+  const nurse = await nurseObj.Nurse.findOne({ userName });
   return nurse;
 };
 
@@ -45,11 +45,11 @@ const deleteNurseById = async id => {
 // ======================Nurse validation====================
 const validateNurse = nurse => {
   const schema = {
-    nName: Joi.string().min(3),
-    nUserName: Joi.string().min(3),
-    nPassword: Joi.string(),
-    nEmail: Joi.string().email(),
-    nPhone: Joi.string().length(10)
+    name: Joi.string().min(3),
+    userName: Joi.string().min(3),
+    password: Joi.string(),
+    email: Joi.string().email(),
+    phone: Joi.string().length(10)
   };
   return Joi.validate(nurse, schema);
 };
