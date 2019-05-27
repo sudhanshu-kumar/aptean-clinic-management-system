@@ -25,6 +25,23 @@ app.post("/api/admins", async (request, response) => {
     }
   });
 
+  //======================Get Admin by Id====================
+  app.get("/api/admins/:adminId", async (request, response) => {
+    try {
+      const admin = await adminObj
+        .getAdminById(request.params.adminId)
+        .catch(() => {
+          response.status(404).send("Requested id not found");
+        });
+      if (admin === null) {
+        response.status(400).send("No Admin found with the given id");
+      }
+      response.json(admin);
+    } catch (err) {
+      response.status(500).send("Something went wrong, please try again..!!!");
+    }
+  });
+
 //=====================Login Admin===========================
 app.post("/api/admins/login", async (request, response) => {
   try {

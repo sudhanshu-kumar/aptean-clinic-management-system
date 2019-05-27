@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./Login.css";
+import { Redirect, Link } from "react-router-dom";
 import axios from "axios";
 class Login extends Component {
   state = {
@@ -16,7 +18,7 @@ class Login extends Component {
   handleLogin = () => {
     axios
       .post(
-        `http://localhost:3001/api/${this.props.type.toLowerCase()}s/login`,
+        `http://localhost:3001/api/${this.props.type}s/login`,
         { userName: this.state.userName, password: this.state.password }
       )
       .then(res => {
@@ -35,23 +37,29 @@ class Login extends Component {
       return (
         <div className="login-box">
           <h2>Login Form</h2>
+          <div className="input-box" >
           <input
             type="text"
+            className="form-control"
             placeholder="username"
             onChange={this.handleUserName}
           />
           <input
             type="password"
+            className="form-control"
             placeholder="password"
             onChange={this.handlePassword}
           />
+          </div>
           <div className="button-box">
-            <button onClick={this.handleLogin}>Login</button>
+            <button className="btn btn-primary" onClick={this.handleLogin}>Login</button>
+            <div>
             <input type="checkbox" />
             <label>Remember Me</label>
+            </div>
           </div>
           <hr />
-          <p>New to Site? Create Account</p>
+          <Link to="/signUp" ><p>New to Site? Create Account</p></Link>
           <h2>Clinic Management System</h2>
         </div>
       );

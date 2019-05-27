@@ -6,6 +6,11 @@ const getAdminByUserName = async userName => {
   return admin;
 };
 
+const getAdminById = async id => {
+  const admin = await adminObj.Admin.findOne({ _id: id });
+  return admin;
+};
+
 const addAdmin = admin => {
   const newAdmin = new adminObj.Admin(admin);
   newAdmin.save();
@@ -24,6 +29,7 @@ const validateAdmin = admin => {
 
 module.exports = {
   getAdminByUserName,
+  getAdminById,
   addAdmin,
   validateAdmin
 };

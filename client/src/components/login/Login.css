@@ -1,0 +1,20 @@
+.login-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 200px;
+    min-height: 100px;
+}
+
+.button-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
