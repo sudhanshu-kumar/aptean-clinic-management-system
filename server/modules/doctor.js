@@ -9,7 +9,8 @@ const doctorSchema = new mongoose.Schema(
     phone: { type: String },
     speciality: { type: String },
     fee: { type: Number },
-    availabilityTimes: { type: String }
+    availabilityTimes: { type: String },
+    userType: { type: String, default: "doctor" }
   },
   { timestamps: true }
 );

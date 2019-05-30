@@ -17,10 +17,10 @@ const getPatientById = async id => {
   return patient;
 };
 
-const getPatientByUniqueId = async uniqueId => {
-    const patient = await patientObj.Patient.findOne({ uniqueId });
-    return patient;
-  };
+const getPatientByUserName = async userName => {
+  const patient = await patientObj.Patient.findOne({ userName });
+  return patient;
+};
 
 const updatePatientById = async (id, reqBody) => {
   const patient = await patientObj.Patient.findOneAndUpdate(
@@ -46,18 +46,16 @@ const deletePatientById = async id => {
 const validatePatient = patient => {
   const schema = {
     tokenId: Joi.number(),
-    pLastName: Joi.string().min(3).required(),
-    pFisrstName: Joi.string().min(3),
+    firstName: Joi.string().min(3),
+    lastName: Joi.string().min(3),
+    userName: Joi.string().min(3),
+    password: Joi.string().min(6),
     age: Joi.number(),
     sex: Joi.string().min(1),
     address: Joi.string().min(3),
-    uniqueId: Joi.string().min(6),
-    emergecyContact: {
-      name: Joi.string().min(3),
-      phone: Joi.string().length(10),
-      eUid: Joi.string().min(6),
-      relation: Joi.string().min(3)
-    }
+    eName: Joi.string().min(3),
+    ePhone: Joi.string().length(10),
+    relation: Joi.string().min(3)
   };
   return Joi.validate(patient, schema);
 };
@@ -66,7 +64,7 @@ module.exports = {
   getPatients,
   addPatient,
   getPatientById,
-  getPatientByUniqueId,
+  getPatientByUserName,
   updatePatientById,
   deletePatientById,
   validatePatient

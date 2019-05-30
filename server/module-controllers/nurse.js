@@ -49,7 +49,8 @@ const validateNurse = nurse => {
     userName: Joi.string().min(3),
     password: Joi.string(),
     email: Joi.string().email(),
-    phone: Joi.string().length(10)
+    phone: Joi.string().length(10),
+    userType: Joi.string().min(3)
   };
   return Joi.validate(nurse, schema);
 };

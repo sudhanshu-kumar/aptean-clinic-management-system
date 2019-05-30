@@ -9,6 +9,7 @@ class AdminHome extends Component {
   };
   handleLogOut = () => {
     sessionStorage.removeItem("user");
+    sessionStorage.removeItem("type");
     this.setState({ user: null });
   };
   componentDidMount() {
@@ -21,7 +22,7 @@ class AdminHome extends Component {
   }
   render() {
     console.log(this.props);
-    if (sessionStorage.getItem("user")) {
+    if (sessionStorage.getItem("user") && sessionStorage.getItem("type") === "admin") {
       return (
         <div>
           <div className="admin-head">
@@ -32,6 +33,12 @@ class AdminHome extends Component {
           </div>
           <Link to="/admin/patients">
             <button className="btn btn-primary">Manage Paients</button>
+          </Link>
+          <Link to="/admin/doctors">
+            <button className="btn btn-primary">Manage Doctors</button>
+          </Link>
+          <Link to="/admin/nurses">
+            <button className="btn btn-primary">Manage Nurses</button>
           </Link>
         </div>
       );

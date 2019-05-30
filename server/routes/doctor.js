@@ -1,5 +1,5 @@
 const express = require("express");
-var bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 const doctorObj = require("../module-controllers/doctor");
 const BCRYPT_SALT_ROUNDS = 10;
 

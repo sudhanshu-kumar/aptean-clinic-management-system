@@ -1,42 +1,55 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
 
 class SignUp extends Component {
   state = {
-    lastName: "",
     firstName: "",
+    lastName: "",
+    userName: "",
+    password: "",
+    cnfPassword: "",
     age: "",
     sex: "",
     address: "",
-    uniqueId: ""
+    name: "",
+    phone: "",
+    relation: ""
   };
 
-  onChangeLastName = event => {
-    this.setState({ lastName: event.target.value });
+  onChangeInput = event => {
+    console.log(event.target.value);
+    this.setState({ [event.target.name]: event.target.value });
   };
 
-  onChangeFirstName = event => {
-    this.setState({ firstName: event.target.value });
-  };
-
-  onChangeAge = event => {
-    this.setState({ age: event.target.value });
-  };
-
-  onChangeSex = event => {
-    this.setState({ sex: event.target.value });
-  };
-
-  onChangeAddress = event => {
-    this.setState({ address: event.target.value });
-  };
-
-  onChangeUniqueId = event => {
-    this.setState({ uniqueId: event.target.value });
+  onSubmit = event => {
+    event.preventDefault();
+    if (this.state.password !== this.state.cnfPassword) {
+      window.alert("password not matched");
+    } else {
+      const patient = JSON.stringify({
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        userName: this.state.password,
+        age: this.state.age,
+        sex: this.state.sex,
+        address: this.state.address,
+        eName: this.state.name,
+        ePhone: this.state.phone,
+        relation: this.state.relation
+      });
+      //fetch(`http://localhost:3001/api/patients`, { method: "post", body: JSON.stringify(patient) })
+      axios
+        .post(`http://localhost:3001/api/patients`, patient)
+        .then(res => console.log(res.data))
+        .then(() => window.alert("account created"))
+        .catch(err => console.log(err));
+    }
   };
 
   render() {
+    //console.log(this.state.userName);
     return (
       <div
         style={{
@@ -48,30 +61,63 @@ class SignUp extends Component {
         <h3 align="center">Sign Up</h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
-            <label>Last Name: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.lastName}
-              onChange={this.onChangeLastName}
-            />
-          </div>
-          <div className="form-group">
             <label>First Name: </label>
             <input
               type="text"
               className="form-control"
+              name="firstName"
               value={this.state.firstName}
-              onChange={this.onChangeFirstName}
+              onChange={this.onChangeInput}
+            />
+          </div>
+          <div className="form-group">
+            <label>Last Name: </label>
+            <input
+              type="text"
+              className="form-control"
+              name="lastName"
+              value={this.state.lastName}
+              onChange={this.onChangeInput}
+            />
+          </div>
+          <div className="form-group">
+            <label>User Name: </label>
+            <input
+              type="text"
+              className="form-control"
+              name="userName"
+              value={this.state.userName}
+              onChange={this.onChangeInput}
+            />
+          </div>
+          <div className="form-group">
+            <label>Password: </label>
+            <input
+              type="password"
+              className="form-control"
+              name="password"
+              value={this.state.password}
+              onChange={this.onChangeInput}
+            />
+          </div>
+          <div className="form-group">
+            <label>Confirm Password: </label>
+            <input
+              type="password"
+              className="form-control"
+              name="cnfPassword"
+              value={this.state.cnfPassword}
+              onChange={this.onChangeInput}
             />
           </div>
           <div className="form-group">
             <label>Age: </label>
             <input
-              type="text"
+              type="number"
               className="form-control"
+              name="age"
               value={this.state.age}
-              onChange={this.onChangeAge}
+              onChange={this.onChangeInput}
             />
           </div>
           <div className="form-group">
@@ -79,8 +125,9 @@ class SignUp extends Component {
             <input
               type="text"
               className="form-control"
+              name="sex"
               value={this.state.sex}
-              onChange={this.onChangeSex}
+              onChange={this.onChangeInput}
             />
           </div>
           <div className="form-group">
@@ -88,17 +135,42 @@ class SignUp extends Component {
             <input
               type="text"
               className="form-control"
+              name="address"
               value={this.state.address}
-              onChange={this.onChangeAddress}
+              onChange={this.onChangeInput}
             />
           </div>
+          <div>
+            <h4>Emergency Contact</h4>
+          </div>
           <div className="form-group">
-            <label>Unique Id: </label>
+            <label>Name: </label>
             <input
               type="text"
               className="form-control"
-              value={this.state.uniqueId}
-              onChange={this.onChangeUniqueId}
+              name="name"
+              value={this.state.name}
+              onChange={this.onChangeInput}
+            />
+          </div>
+          <div className="form-group">
+            <label>Phone: </label>
+            <input
+              type="number"
+              className="form-control"
+              name="phone"
+              value={this.state.phone}
+              onChange={this.onChangeInput}
+            />
+          </div>
+          <div className="form-group">
+            <label>Relation: </label>
+            <input
+              type="text"
+              className="form-control"
+              name="relation"
+              value={this.state.relation}
+              onChange={this.onChangeInput}
             />
           </div>
           <div className="form-group">

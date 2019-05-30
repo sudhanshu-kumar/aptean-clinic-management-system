@@ -1,5 +1,8 @@
 const express = require("express");
 const appointmentObj = require("../module-controllers/appointment");
+const doctorObj = require("../module-controllers/doctor");
+const patientObj = require("../module-controllers/patient");
+const nurseObj = require("../module-controllers/nurse");
 
 const app = express.Router();
 
@@ -16,16 +19,31 @@ app.get("/api/appointments", async (request, response) => {
 });
 
 //= =================Add New Appointment=========================
-app.post("/api/appointments", (request, response) => {
+app.post("/api/appointments", async (request, response) => {
   try {
     console.log(request.body);
     const { error } = appointmentObj.validateAppointment(request.body); // result.error (object destructor)
     console.log(error);
     if (error) {
-       response.status(400).send(error.details[0].message);
-     } else {
-      const newAppointment = appointmentObj.addAppointment(request.body);
-      response.json(newAppointment);
+      response.status(400).send(error.details[0].message);
+    } else {
+      const doctor = await doctorObj.getDoctorById(request.body.doctor);
+      if (doctor === null) {
+        response.status(404).send("No doctor found with the given id");
+      } else {
+        const patient = await patientObj.getPatientById(request.body.patient);
+        if (patient === null) {
+          response.status(404).send("No patient found with the given id");
+        } else {
+          const nurse = await nurseObj.getNurseById(request.body.createdBy);
+          if (nurse === null) {
+            response.status(404).send("No Nurse found with the given id");
+          } else {
+            const newAppointment = appointmentObj.addAppointment(request.body);
+            response.json(newAppointment);
+          }
+        }
+      }
     }
   } catch (err) {
     response.status(500).send("Something went wrong, please try again..!!!");
@@ -56,6 +74,7 @@ app.put("/api/appointments/:appointmentId", async (request, response) => {
     if (error) {
       response.status(400).send(error.details[0].message);
     } else {
+      
       const appointment = await appointmentObj
         .updateAppointmentById(request.params.appointmentId, request.body)
         .catch(() => {
@@ -76,7 +95,9 @@ app.delete("/api/appointments/:appointmentId", async (request, response) => {
   try {
     const appointment = await appointmentObj
       .deleteAppointmentById(request.params.appointmentId)
-      .then(() => { response.status(204).send("deleted successfully") })
+      .then(() => {
+        response.status(204).send("deleted successfully");
+      })
       .catch(() => {
         response.status(404).send("Requested id not found");
       });

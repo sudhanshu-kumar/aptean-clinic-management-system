@@ -6,15 +6,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 class Index extends Component {
   state = {
-    patients: []
+    doctors: []
   };
 
   componentDidMount() {
     axios
-      .get("http://localhost:3001/api/patients")
+      .get("http://localhost:3001/api/doctors")
       .then(response => {
         console.log(response.data);
-        this.setState({ patients: response.data });
+        this.setState({ doctors: response.data });
       })
       .catch(function(error) {
         console.log(error);
@@ -22,7 +22,7 @@ class Index extends Component {
   }
 
   tabRow() {
-    return this.state.patients.map(function(object, i) {
+    return this.state.doctors.map(function(object, i) {
       return <TableRow obj={object} key={i} />;
     });
   }
@@ -35,26 +35,24 @@ class Index extends Component {
       return (
         <div>
           <div className="container">
-            <h2>Admin Patient Index</h2>
+            <h2>Admin Doctor Index</h2>
             <Link to={`/admin/${sessionStorage.getItem("user")}`}>
               <button className="btn btn-primary">Back To Home</button>
             </Link>
-            <h3 align="center">Patient List</h3>
-            <Link to={"/admin/patients/add"}>
+            <h3 align="center">Doctor List</h3>
+            <Link to={"/admin/doctors/add"}>
               <h3 align="center">Add</h3>
             </Link>
             <table className="table table-striped" style={{ marginTop: 20 }}>
               <thead>
                 <tr>
-                  <th>First Name</th>
-                  <th>Last Name</th>
+                  <th>Name</th>
                   <th>Username</th>
-                  <th>Age</th>
-                  <th>Sex</th>
-                  <th>Address</th>
-                  <th>E Name</th>
-                  <th>E Phone</th>
-                  <th>Relation</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Speciality</th>
+                  <th>Fee</th>
+                  <th>Availability Times</th>
                   <th colSpan="2">Action</th>
                 </tr>
               </thead>

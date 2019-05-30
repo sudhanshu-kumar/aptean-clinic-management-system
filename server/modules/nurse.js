@@ -6,7 +6,8 @@ const nurseSchema = new mongoose.Schema(
     userName: { type: String },
     password: { type: String },
     email: { type: String },
-    phone: { type: String }
+    phone: { type: String },
+    userType: { type: String, default: "nurse" }
   },
   { timestamps: true }
 );

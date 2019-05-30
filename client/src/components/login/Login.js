@@ -17,13 +17,14 @@ class Login extends Component {
   };
   handleLogin = () => {
     axios
-      .post(
-        `http://localhost:3001/api/${this.props.type}s/login`,
-        { userName: this.state.userName, password: this.state.password }
-      )
+      .post(`http://localhost:3001/api/login`, {
+        userName: this.state.userName,
+        password: this.state.password
+      })
       .then(res => {
         console.log(res);
         sessionStorage.setItem("user", res.data._id);
+        sessionStorage.setItem("type", res.data.userType);
         this.setState({ user: res.data });
       })
       .catch(err => {
@@ -32,40 +33,44 @@ class Login extends Component {
       });
   };
   render() {
-    console.log(this.props.type);
-    if (!this.state.user) {
+    console.log(sessionStorage.getItem("user"));
+    if (!this.state.user && sessionStorage.getItem("user") == null) {
       return (
         <div className="login-box">
           <h2>Login Form</h2>
-          <div className="input-box" >
-          <input
-            type="text"
-            className="form-control"
-            placeholder="username"
-            onChange={this.handleUserName}
-          />
-          <input
-            type="password"
-            className="form-control"
-            placeholder="password"
-            onChange={this.handlePassword}
-          />
+          <div className="input-box">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="username"
+              onChange={this.handleUserName}
+            />
+            <input
+              type="password"
+              className="form-control"
+              placeholder="password"
+              onChange={this.handlePassword}
+            />
           </div>
           <div className="button-box">
-            <button className="btn btn-primary" onClick={this.handleLogin}>Login</button>
-            <div>
-            <input type="checkbox" />
-            <label>Remember Me</label>
-            </div>
+            <button className="btn btn-primary" onClick={this.handleLogin}>
+              Login
+            </button>
           </div>
           <hr />
-          <Link to="/signUp" ><p>New to Site? Create Account</p></Link>
+          <Link to="/signUp">
+            <p>New to Site? Create Account</p>
+          </Link>
           <h2>Clinic Management System</h2>
         </div>
       );
-    } else if(this.state.user) {
+    } else if (this.state.user || sessionStorage.getItem("user") !== null) {
       return (
-        <Redirect to={`/${this.props.type}/${sessionStorage.getItem("user")}`} />
+        <Redirect
+          to={`/${sessionStorage.getItem("type")}/${sessionStorage.getItem(
+            "user"
+          )}`}
+        />
       );
     }
   }

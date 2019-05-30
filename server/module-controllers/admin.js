@@ -22,7 +22,8 @@ const validateAdmin = admin => {
   const schema = {
     name: Joi.string().min(3),
     userName: Joi.string().min(3),
-    password: Joi.string()
+    password: Joi.string().min(6),
+    userType: Joi.string().min(3)
   };
   return Joi.validate(admin, schema);
 };

@@ -1,6 +1,7 @@
 const express = require("express");
 const db = require("./mongoDB-connection/dbConnection");
 const app = express();
+const bodyParser = require("body-parser");
 const cors = require("cors");
 const patientRoute = require("./routes/patient");
 const doctorRoute = require("./routes/doctor");
@@ -9,7 +10,13 @@ const appointmentRoute = require("./routes/appointment");
 const invoiceRoute = require("./routes/invoice");
 const paymentRoute = require("./routes/payment");
 const adminRoute = require("./routes/admin");
+const loginRoute = require("./routes/login");
 
+// app.use(
+//   bodyParser.urlencoded({
+//     extended: true
+//   })
+// );
 app.use(cors());
 app.use(express.json());
 
@@ -20,6 +27,7 @@ app.use(appointmentRoute.app);
 app.use(invoiceRoute.app);
 app.use(paymentRoute.app);
 app.use(adminRoute.app);
+app.use(loginRoute.app);
 
 // PORT
 const port = process.env.PORT || 3001;
@@ -29,3 +37,5 @@ db.getDBConnection().then(() => {
     console.log(`server is running on port number ${port}...`);
   });
 });
+
+

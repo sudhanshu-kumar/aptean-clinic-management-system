@@ -1,5 +1,7 @@
 const express = require("express");
+const bcrypt = require("bcrypt");
 const patientObj = require("../module-controllers/patient");
+const BCRYPT_SALT_ROUNDS = 10;
 
 const app = express.Router();
 
@@ -9,7 +11,7 @@ app.get("/api/patients", async (request, response) => {
     const patients = await patientObj.getPatients();
     console.log("sds");
     if (patients.length > 0) response.json(patients);
-    response.status(404).send("no patient found");
+    else response.status(404).send("no patient found");
   } catch (err) {
     response.status(500).send("Something went wrong, please try again..!!!");
   }
@@ -26,6 +28,10 @@ app.post("/api/patients", async (request, response) => {
       const patients = await patientObj.getPatients();
       if (patients.length < 1) request.body.tokenId = 101;
       else request.body.tokenId = patients[patients.length - 1].tokenId + 1;
+      request.body.password = await bcrypt.hash(
+        request.body.password,
+        BCRYPT_SALT_ROUNDS
+      );
       const newPatient = patientObj.addPatient(request.body);
       response.json(newPatient);
     }

@@ -52,7 +52,8 @@ const validateDoctor = doctor => {
     phone: Joi.string().length(10),
     speciality: Joi.string().min(3),
     fee: Joi.number(),
-    availabilityTimes: Joi.string()
+    availabilityTimes: Joi.string(),
+    userType: Joi.string().min(3)
   };
   return Joi.validate(doctor, schema);
 };

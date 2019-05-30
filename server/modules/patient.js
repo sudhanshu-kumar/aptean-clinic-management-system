@@ -2,19 +2,18 @@ const mongoose = require("mongoose");
 
 const patientSchema = new mongoose.Schema(
   {
-    tokenId: { type: Number, unique: true },
-    pLastName: { type: String },
-    pFisrstName: { type: String },
+    tokenId: { type: Number },
+    firstName: { type: String },
+    lastName: { type: String },
+    userName: { type: String },
+    password: { type: String },
     age: { type: Number },
     sex: { type: String },
     address: { type: String },
-    uniqueId: { type: String, unique: true },
-    emergecyContact: {
-      name: { type: String },
-      phone: { type: String },
-      eUid: { type: String },
-      relation: { type: String }
-    }
+    eName: { type: String },
+    ePhone: { type: String },
+    relation: { type: String },
+    userType: { type: String, default: "patient" }
   },
   { timestamps: true }
 );
