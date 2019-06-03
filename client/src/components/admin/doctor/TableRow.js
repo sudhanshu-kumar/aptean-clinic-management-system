@@ -31,7 +31,7 @@ class TableRow extends Component {
         <td>{this.props.obj.availabilityTimes}</td>
         <td>
           <Link
-            to={"/admin/patients/edit/" + this.props.obj._id}
+            to={"/admin/doctors/edit/" + this.props.obj._id}
             className="btn btn-primary"
           >
             Edit

@@ -9,6 +9,11 @@ import PatientIndex from "./components/admin/patient/Index.Component";
 import DoctorIndex from "./components/admin/doctor/Index.Component";
 import NurseIndex from "./components/admin/nurse/Index.Component";
 import AddPatient from "./components/admin/patient/Create.Component";
+import AddDoctor from "./components/admin/doctor/Create.Component";
+import AddNurse from "./components/admin/nurse/Create.Component";
+import EditDoctor from "./components/admin/doctor/Edit.Component";
+import EditNurse from "./components/admin/nurse/Edit.Component";
+import EditPatient from "./components/admin/patient/Edit.Component";
 import DoctorHome from "./components/doctor/Home";
 import PatientHome from "./components/patient/Home";
 import NurseHome from "./components/nurse/Home";
@@ -25,6 +30,23 @@ const Routing = () => {
             <Route exact path={"/admin/doctors"} component={DoctorIndex} />
             <Route exact path={"/admin/nurses"} component={NurseIndex} />
             <Route exact path={"/admin/patients/add"} component={AddPatient} />
+            <Route exact path={"/admin/doctors/add"} component={AddDoctor} />
+            <Route exact path={"/admin/nurses/add"} component={AddNurse} />
+            <Route
+              exact
+              path={"/admin/doctors/edit/:doctorId"}
+              component={EditDoctor}
+            />
+            <Route
+              exact
+              path={"/admin/nurses/edit/:nurseId"}
+              component={EditNurse}
+            />
+            <Route
+              exact
+              path={"/admin/patients/edit/:patientId"}
+              component={EditPatient}
+            />
             <Route exact path={"/signUp"} component={SignUp} />
             <Route exact path={"/admin/:adminId"} component={AdminHome} />
             <Route exact path={"/doctor/:doctorId"} component={DoctorHome} />

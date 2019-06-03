@@ -2,19 +2,34 @@ import React, { Component } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, Redirect } from "react-router-dom";
-export class Create extends Component {
+export class Edit extends Component {
   state = {
-    firstName: "",
-    lastName: "",
-    userName: "",
-    password: "",
-    age: "",
-    sex: "",
-    address: "",
     name: "",
+    userName: "",
+    email: "",
     phone: "",
-    relation: ""
+    speciality: "",
+    fee: "",
+    availabilityTimes: ""
   };
+  componentDidMount() {
+    axios
+      .get(
+        "http://localhost:3001/api/doctors/" + this.props.match.params.doctorId
+      )
+      .then(response => {
+        console.log(response.data);
+        this.setState({
+          name: response.data.name,
+          userName: response.data.userName,
+          email: response.data.email,
+          phone: response.data.phone,
+          speciality: response.data.speciality,
+          fee: response.data.fee,
+          availabilityTimes: response.data.availabilityTimes
+        });
+      });
+  }
 
   onChangeInput = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -23,60 +38,39 @@ export class Create extends Component {
   onSubmit = event => {
     event.preventDefault();
     const obj = {
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
+      name: this.state.name,
       userName: this.state.userName,
-      password: this.state.password,
-      age: this.state.age,
-      sex: this.state.sex,
-      address: this.state.address,
-      eName: this.state.name,
-      ePhone: this.state.phone,
-      relation: this.state.relation
+      email: this.state.email,
+      phone: this.state.phone,
+      speciality: this.state.speciality,
+      fee: this.state.fee
     };
 
     axios
-      .post("http://localhost:3001/api/patients", obj)
-      .then(res => console.log(res.data))
-      .then(() => {
-        this.setState({
-          firstName: "",
-          lastName: "",
-          userName: "",
-          password: "",
-          age: "",
-          sex: "",
-          address: "",
-          eName: "",
-          ePhone: "",
-          relation: ""
-        });
+      .put(
+        "http://localhost:3001/api/doctors/" + this.props.match.params.doctorId,
+        obj
+      )
+      .then(res => {
+        console.log(res.data);
+        window.alert("Successfully Updated");
       })
-      .catch(error => {
-        console.log(error.message);
-      });
+      .catch(err => console.log(err));
+    //this.props.history.push("/nurse/appointments");
   };
   render() {
     if (sessionStorage.getItem("type") === "admin") {
       return (
         <div style={{ marginTop: 10 }}>
-          <h3 align="center">Add New patient</h3>
+          <h3 align="center">Edit Doctor</h3>
           <form onSubmit={this.onSubmit}>
             <div className="form-group">
-              <label>First Name: </label>
+              <label>Name: </label>
               <input
                 type="text"
                 className="form-control"
-                name="firstName"
-                onChange={this.onChangeInput}
-              />
-            </div>
-            <div className="form-group">
-              <label>Last Name: </label>
-              <input
-                type="text"
-                className="form-control"
-                name="lastName"
+                name="name"
+                value={this.state.name}
                 onChange={this.onChangeInput}
               />
             </div>
@@ -86,54 +80,17 @@ export class Create extends Component {
                 type="text"
                 className="form-control"
                 name="userName"
+                value={this.state.userName}
                 onChange={this.onChangeInput}
               />
             </div>
             <div className="form-group">
-              <label>Password: </label>
-              <input
-                type="password"
-                className="form-control"
-                name="password"
-                onChange={this.onChangeInput}
-              />
-            </div>
-            <div className="form-group">
-              <label>Age: </label>
+              <label>Email: </label>
               <input
                 type="text"
                 className="form-control"
-                name="age"
-                onChange={this.onChangeInput}
-              />
-            </div>
-            <div className="form-group">
-              <label>Sex: </label>
-              <input
-                type="text"
-                className="form-control"
-                name="sex"
-                onChange={this.onChangeInput}
-              />
-            </div>
-            <div className="form-group">
-              <label>Address: </label>
-              <input
-                type="text"
-                className="form-control"
-                name="address"
-                onChange={this.onChangeInput}
-              />
-            </div>
-            <div>
-              <h3>Emergency Contact:</h3>
-            </div>
-            <div className="form-group">
-              <label>Name: </label>
-              <input
-                type="text"
-                className="form-control"
-                name="name"
+                name="email"
+                value={this.state.email}
                 onChange={this.onChangeInput}
               />
             </div>
@@ -143,31 +100,53 @@ export class Create extends Component {
                 type="text"
                 className="form-control"
                 name="phone"
+                value={this.state.phone}
                 onChange={this.onChangeInput}
               />
             </div>
             <div className="form-group">
-              <label>Relation: </label>
+              <label>Speciality: </label>
               <input
                 type="text"
                 className="form-control"
-                name="relation"
+                name="speciality"
+                value={this.state.speciality}
+                onChange={this.onChangeInput}
+              />
+            </div>
+            <div className="form-group">
+              <label>Fee: </label>
+              <input
+                type="text"
+                className="form-control"
+                name="fee"
+                value={this.state.fee}
+                onChange={this.onChangeInput}
+              />
+            </div>
+            <div className="form-group">
+              <label>Availability Times: </label>
+              <input
+                type="text"
+                className="form-control"
+                name="availabilityTimes"
+                value={this.state.availabilityTimes}
                 onChange={this.onChangeInput}
               />
             </div>
             <div className="form-group">
               <input
                 type="submit"
-                value="Register Patient"
+                value="Update Doctor"
                 className="btn btn-primary"
               />
             </div>
-            <Link to={"/admin/patients"}>
+            <Link to={"/admin/doctors"}>
               {" "}
               <div className="form-group">
                 <input
                   type="submit"
-                  value="Back to Index"
+                  value="Back to List"
                   className="btn btn-primary"
                 />
               </div>
@@ -179,4 +158,4 @@ export class Create extends Component {
   }
 }
 
-export default Create;
+export default Edit;

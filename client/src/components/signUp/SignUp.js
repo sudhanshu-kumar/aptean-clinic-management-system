@@ -28,20 +28,21 @@ class SignUp extends Component {
     if (this.state.password !== this.state.cnfPassword) {
       window.alert("password not matched");
     } else {
-      const patient = JSON.stringify({
+      const patient = {
         firstName: this.state.firstName,
         lastName: this.state.lastName,
-        userName: this.state.password,
+        userName: this.state.userName,
+        password: this.state.password,
         age: this.state.age,
         sex: this.state.sex,
         address: this.state.address,
         eName: this.state.name,
         ePhone: this.state.phone,
         relation: this.state.relation
-      });
+      };
       //fetch(`http://localhost:3001/api/patients`, { method: "post", body: JSON.stringify(patient) })
       axios
-        .post(`http://localhost:3001/api/patients`, patient)
+        .post("http://localhost:3001/api/patients", patient)
         .then(res => console.log(res.data))
         .then(() => window.alert("account created"))
         .catch(err => console.log(err));
@@ -66,7 +67,6 @@ class SignUp extends Component {
               type="text"
               className="form-control"
               name="firstName"
-              value={this.state.firstName}
               onChange={this.onChangeInput}
             />
           </div>
@@ -76,7 +76,6 @@ class SignUp extends Component {
               type="text"
               className="form-control"
               name="lastName"
-              value={this.state.lastName}
               onChange={this.onChangeInput}
             />
           </div>
@@ -86,7 +85,6 @@ class SignUp extends Component {
               type="text"
               className="form-control"
               name="userName"
-              value={this.state.userName}
               onChange={this.onChangeInput}
             />
           </div>
@@ -96,7 +94,6 @@ class SignUp extends Component {
               type="password"
               className="form-control"
               name="password"
-              value={this.state.password}
               onChange={this.onChangeInput}
             />
           </div>
@@ -106,7 +103,6 @@ class SignUp extends Component {
               type="password"
               className="form-control"
               name="cnfPassword"
-              value={this.state.cnfPassword}
               onChange={this.onChangeInput}
             />
           </div>
@@ -116,7 +112,6 @@ class SignUp extends Component {
               type="number"
               className="form-control"
               name="age"
-              value={this.state.age}
               onChange={this.onChangeInput}
             />
           </div>
@@ -126,7 +121,6 @@ class SignUp extends Component {
               type="text"
               className="form-control"
               name="sex"
-              value={this.state.sex}
               onChange={this.onChangeInput}
             />
           </div>
@@ -136,7 +130,6 @@ class SignUp extends Component {
               type="text"
               className="form-control"
               name="address"
-              value={this.state.address}
               onChange={this.onChangeInput}
             />
           </div>
@@ -149,7 +142,6 @@ class SignUp extends Component {
               type="text"
               className="form-control"
               name="name"
-              value={this.state.name}
               onChange={this.onChangeInput}
             />
           </div>
@@ -159,7 +151,6 @@ class SignUp extends Component {
               type="number"
               className="form-control"
               name="phone"
-              value={this.state.phone}
               onChange={this.onChangeInput}
             />
           </div>
@@ -169,7 +160,6 @@ class SignUp extends Component {
               type="text"
               className="form-control"
               name="relation"
-              value={this.state.relation}
               onChange={this.onChangeInput}
             />
           </div>

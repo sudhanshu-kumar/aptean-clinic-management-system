@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Redirect, Link } from "react-router-dom";
 import axios from "axios";
-import TableRow from "./TableRow";
+//import TableRow from "./TableRow";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 class Index extends Component {
@@ -21,11 +21,31 @@ class Index extends Component {
       });
   }
 
-  tabRow() {
-    return this.state.patients.map(function(object, i) {
-      return <TableRow obj={object} key={i} />;
-    });
-  }
+  deletePatient = event => {
+    axios
+      .delete("http://localhost:3001/api/patients/" + event.target.id)
+      .then(res => {
+        console.log(res.data);
+      })
+      .then(() => {
+        axios
+          .get("http://localhost:3001/api/patients")
+          .then(response => {
+            console.log(response.data);
+            this.setState({ patients: response.data });
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      })
+      .catch(err => console.log(err));
+  };
+
+  // tabRow = () => {
+  //   return this.state.patients.map(function(object, i) {
+  //     return <TableRow obj={object} key={i} />;
+  //   });
+  // };
 
   render() {
     if (
@@ -58,7 +78,42 @@ class Index extends Component {
                   <th colSpan="2">Action</th>
                 </tr>
               </thead>
-              <tbody>{this.tabRow()}</tbody>
+              <tbody>
+                {this.state.patients.map(function(object, i) {
+                  return (
+                    <div>
+                      <tr key={i}>
+                        <td>{object.firstName}</td>
+                        <td>{object.lastName}</td>
+                        <td>{object.userName}</td>
+                        <td>{object.age}</td>
+                        <td>{object.sex}</td>
+                        <td>{object.address}</td>
+                        <td>{object.eName}</td>
+                        <td>{object.ePhone}</td>
+                        <td>{object.relation}</td>
+                        <td>
+                          <Link
+                            to={"/admin/patients/edit/" + object._id}
+                            className="btn btn-primary"
+                          >
+                            Edit
+                          </Link>
+                        </td>
+                        <td>
+                          <button
+                            id={object._id}
+                            onClick={this.deletePatient}
+                            className="btn btn-danger"
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    </div>
+                  );
+                })}
+              </tbody>
             </table>
           </div>
         </div>

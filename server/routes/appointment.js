@@ -22,26 +22,31 @@ app.get("/api/appointments", async (request, response) => {
 app.post("/api/appointments", async (request, response) => {
   try {
     console.log(request.body);
-    const { error } = appointmentObj.validateAppointment(request.body); // result.error (object destructor)
-    console.log(error);
-    if (error) {
-      response.status(400).send(error.details[0].message);
+    const doctor = await doctorObj.getDoctorByUserName(request.body.doctor);
+    if (doctor === null) {
+      response.status(404).send("No doctor found with the given username");
     } else {
-      const doctor = await doctorObj.getDoctorById(request.body.doctor);
-      if (doctor === null) {
-        response.status(404).send("No doctor found with the given id");
+      const patient = await patientObj.getPatientByUserName(
+        request.body.patient
+      );
+      if (patient === null) {
+        response.status(404).send("No patient found with the given username");
       } else {
-        const patient = await patientObj.getPatientById(request.body.patient);
-        if (patient === null) {
-          response.status(404).send("No patient found with the given id");
+        const nurse = await nurseObj.getNurseByUserName(request.body.createdBy);
+        if (nurse === null) {
+          response.status(404).send("No Nurse found with the given username");
         } else {
-          const nurse = await nurseObj.getNurseById(request.body.createdBy);
-          if (nurse === null) {
-            response.status(404).send("No Nurse found with the given id");
-          } else {
-            const newAppointment = appointmentObj.addAppointment(request.body);
-            response.json(newAppointment);
+          request.body.doctor = doctor._id.toString();
+          request.body.patient = patient._id.toString();
+          request.body.createdBy = nurse._id.toString();
+          console.log(request.body);
+          const { error } = appointmentObj.validateAppointment(request.body); // result.error (object destructor)
+          console.log(error);
+          if (error) {
+            response.status(400).send(error.details[0].message);
           }
+          const newAppointment = appointmentObj.addAppointment(request.body);
+          response.json(newAppointment);
         }
       }
     }
@@ -67,23 +72,54 @@ app.get("/api/appointments/:appointmentId", async (request, response) => {
   }
 });
 
+//= =================Get Appointment By Patient========================
+app.get("/api/appointments/patient/:patient", async (request, response) => {
+  try {
+    const appointment = await appointmentObj
+      .getAppointmentByPatient(request.params.patient)
+      .catch(() => {
+        response.status(404).send("Requested id not found");
+      });
+    if (appointment === null) {
+      response.status(400).send("No Appointment found with the given Patient");
+    }
+    response.json(appointment);
+  } catch (err) {
+    response.status(500).send("Something went wrong, please try again..!!!");
+  }
+});
+
 // ========================Update Appointment By Id======================
 app.put("/api/appointments/:appointmentId", async (request, response) => {
   try {
-    const { error } = appointmentObj.validateAppointment(request.body); // result.error (object destructor)
-    if (error) {
-      response.status(400).send(error.details[0].message);
+    const doctor = await doctorObj.getDoctorByUserName(request.body.doctor);
+    const patient = await patientObj.getPatientByUserName(request.body.patient);
+    const nurse = await nurseObj.getNurseByUserName(request.body.createdBy);
+    if (doctor === null) {
+      response.status(400).send("No Doctor found with the given username");
+    } else if (patient === null) {
+      response.status(400).send("No Patient found with the given username");
+    } else if (nurse === null) {
+      response.status(400).send("No Nurse found with the given username");
     } else {
-      
-      const appointment = await appointmentObj
-        .updateAppointmentById(request.params.appointmentId, request.body)
-        .catch(() => {
-          response.status(404).send("Requested id not found");
-        });
-      if (appointment === null) {
-        response.status(400).send("No Appointment found with the given id");
+      request.body.doctor = doctor._id.toString();
+      request.body.patient = patient._id.toString();
+      request.body.createdBy = nurse._id.toString();
+      console.log(request.body);
+      const { error } = appointmentObj.validateAppointment(request.body); // result.error (object destructor)
+      if (error) {
+        response.status(400).send(error.details[0].message);
+      } else {
+        const appointment = await appointmentObj
+          .updateAppointmentById(request.params.appointmentId, request.body)
+          .catch(() => {
+            response.status(404).send("Requested id not found");
+          });
+        if (appointment === null) {
+          response.status(400).send("No Appointment found with the given id");
+        }
+        response.json(appointment);
       }
-      response.json(appointment);
     }
   } catch (err) {
     response.status(500).send("Something went wrong, please try again..!!!");

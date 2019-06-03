@@ -1,0 +1,29 @@
+.head-box {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1.6em;
+}
+
+.nav-box {
+  justify-self: flex-start;
+  display: flex;
+  justify-content: space-between;
+  min-width: 24em;
+}
+
+.apt-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 1em;
+}
+
+.title-box button {
+    margin-left: 4em;
+}
