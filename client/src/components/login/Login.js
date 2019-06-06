@@ -23,9 +23,9 @@ class Login extends Component {
       })
       .then(res => {
         console.log(res);
-        sessionStorage.setItem("user", res.data._id);
-        sessionStorage.setItem("type", res.data.userType);
-        this.setState({ user: res.data });
+        sessionStorage.setItem("user", res.data.token);
+        sessionStorage.setItem("type", res.data.user.userType);
+        this.setState({ user: res.data.user });
       })
       .catch(err => {
         console.log(err);

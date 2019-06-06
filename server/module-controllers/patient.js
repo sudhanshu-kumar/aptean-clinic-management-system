@@ -2,7 +2,7 @@ const Joi = require("joi");
 const patientObj = require("../modules/patient");
 
 const getPatients = async () => {
-  const patient = await patientObj.Patient.find({});
+  const patient = await patientObj.Patient.find({}).select("-password");
   return patient;
 };
 

@@ -8,7 +8,7 @@
   justify-self: flex-start;
   display: flex;
   justify-content: space-between;
-  min-width: 24em;
+  min-width: 32em;
 }
 
 .apt-box {

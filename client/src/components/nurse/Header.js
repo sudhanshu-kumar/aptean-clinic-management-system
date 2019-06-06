@@ -10,10 +10,13 @@ const Header = props => {
           <button className="btn btn-primary">Home</button>
         </NavLink>
         <NavLink to="/nurse/profile">
-          <button className="btn btn-primary">profile</button>
+          <button className="btn btn-primary">Profile</button>
         </NavLink>
         <NavLink to="/nurse/appointments">
           <button className="btn btn-primary">Manage Appointments</button>
+        </NavLink>
+        <NavLink to="/nurse/visits">
+          <button className="btn btn-primary">Manage Visits</button>
         </NavLink>
       </div>
       <button className="btn btn-danger" onClick={props.handleLogout}>

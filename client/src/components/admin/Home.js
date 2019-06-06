@@ -13,8 +13,9 @@ class AdminHome extends Component {
     this.setState({ user: null });
   };
   componentDidMount() {
+
     axios
-      .get(`http://localhost:3001/api/admins/${sessionStorage.getItem("user")}`)
+      .get(`http://localhost:3001/api/admin`, { headers: { authorization: `Bearer ${sessionStorage.getItem("user")}` } })
       .then(res => {
         console.log(res.data);
         this.setState({ user: res.data });

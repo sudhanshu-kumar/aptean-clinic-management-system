@@ -1,9 +1,11 @@
 const express = require("express");
-var bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
 const adminObj = require("../module-controllers/admin");
 const doctorObj = require("../module-controllers/doctor");
 const patientObj = require("../module-controllers/patient");
 const nurseObj = require("../module-controllers/nurse");
+
 
 const app = express.Router();
 
@@ -25,7 +27,13 @@ app.post("/api/login", async (request, response) => {
               admin.password
             );
             if (!samePassword) response.status(403).send("password incorrect");
-            response.json(admin);
+            jwt.sign({adminId: admin._id}, 'key', (err, token) => {
+              response.json({
+                token,
+                user: admin
+              });
+            });
+            //response.json(admin);
           }
         } else {
           const samePassword = await bcrypt.compare(
@@ -33,7 +41,13 @@ app.post("/api/login", async (request, response) => {
             nurse.password
           );
           if (!samePassword) response.status(403).send("password incorrect");
-          response.json(nurse);
+          jwt.sign({nurseId: nurse._id}, 'key', (err, token) => {
+            response.json({
+              token,
+              user: nurse
+            });
+          });
+          //response.json(nurse);
         }
       } else {
         const samePassword = await bcrypt.compare(

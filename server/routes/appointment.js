@@ -10,7 +10,6 @@ const app = express.Router();
 app.get("/api/appointments", async (request, response) => {
   try {
     const appointments = await appointmentObj.getAppointments();
-    console.log("sds");
     if (appointments.length > 0) response.json(appointments);
     response.status(404).send("no appointment found");
   } catch (err) {

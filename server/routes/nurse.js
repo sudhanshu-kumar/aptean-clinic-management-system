@@ -1,6 +1,7 @@
 const express = require("express");
 var bcrypt = require("bcrypt");
 const nurseObj = require("../module-controllers/nurse");
+const { verifyToken } = require('../middlewares/auth');
 const BCRYPT_SALT_ROUNDS = 10;
 
 const app = express.Router();
@@ -55,10 +56,17 @@ app.post("/api/nurses/login", async (request, response) => {
 });
 
 //= =================Get Nurse By Id========================
-app.get("/api/nurses/:nurseId", async (request, response) => {
+app.get("/api/nurse", verifyToken, async (request, response) => {
   try {
+    let decoded = {}
+      try {
+        decoded = jwt.verify(request.token, "key");
+        //console.log(decoded)
+
+      } catch(err) { response.sendStatus(403) }
+      console.log("nurseid"+decoded.nurseId)
     const nurse = await nurseObj
-      .getNurseById(request.params.nurseId)
+      .getNurseById(decoded.nurseId)
       .catch(() => {
         response.status(404).send("Requested id not found");
       });

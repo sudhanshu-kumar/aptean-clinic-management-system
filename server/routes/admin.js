@@ -1,12 +1,14 @@
 const express = require("express");
-var bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
 const adminObj = require("../module-controllers/admin");
+const { verifyToken } = require('../middlewares/auth');
 const BCRYPT_SALT_ROUNDS = 10;
 
 const app = express.Router();
 
 //= =================Add New Admin=========================
-app.post("/api/admins", async (request, response) => {
+app.post("/api/admins", verifyToken, async (request, response) => {
     try {
       const { error } = adminObj.validateAdmin(request.body); // result.error (object destructor)
       console.log(error);
@@ -26,10 +28,17 @@ app.post("/api/admins", async (request, response) => {
   });
 
   //======================Get Admin by Id====================
-  app.get("/api/admins/:adminId", async (request, response) => {
+  app.get("/api/admin", verifyToken, async (request, response) => {
     try {
+      let decoded = {}
+      try {
+        decoded = jwt.verify(request.token, "key");
+        //console.log(decoded)
+
+      } catch(err) { response.sendStatus(403) }
+      console.log(decoded.adminId)
       const admin = await adminObj
-        .getAdminById(request.params.adminId)
+        .getAdminById(decoded.adminId)
         .catch(() => {
           response.status(404).send("Requested id not found");
         });

@@ -6,6 +6,8 @@ import Profile from "./Profile";
 import AppointmentIndex from "./appointment/AppointmentIndex";
 import AppointmentAdd from "./appointment/AppointmentAdd";
 import AppointmentEdit from "./appointment/AppointmentEdit";
+import VisitIndex from "./visit/VisitIndex";
+import VisitAdd from "./visit/VisitAdd";
 
 class Home extends Component {
   state = {
@@ -20,7 +22,7 @@ class Home extends Component {
 
   componentDidMount() {
     axios
-      .get(`http://localhost:3001/api/nurses/${sessionStorage.getItem("user")}`)
+      .get(`http://localhost:3001/api/nurse`,{ headers: { authorization: `Bearer ${sessionStorage.getItem("user")}` } })
       .then(res => {
         this.setState({ user: res.data });
       })
@@ -59,6 +61,8 @@ class Home extends Component {
                 component={AppointmentAdd}
                 exact
               />
+              <Route path="/nurse/visits" component={VisitIndex} exact />
+              <Route path="/nurse/visits/add" component={VisitAdd} exact />
             </Switch>
           </div>
         </BrowserRouter>
