@@ -1,0 +1,122 @@
+mongodb+srv://sudhana:sudhana123@cluster0-n2q25.mongodb.net/clinicdb?retryWrites=true
+
+name: { type: String, required: true },
+      phone: { type: String, required: true },
+      eUid: { type: String, required: true },
+      relation: { type: String, required: true }
+
+
+{
+      name: Joi.string().min(3),
+      phone: Joi.string().length(10),
+      eUid: Joi.string().min(6),
+      relation: Joi.string().min(3)
+    }
+-----------------------------------------------------
+patient obj:
+{
+	"tokenId": 01,
+	"pLastName": "kumar",
+	"pFisrstName": "sud",
+	"age": 25,
+	"sex": "male",
+	"address": "BTM",
+	"uniqueId": "qw12",
+	"emergecyContact": {
+    	"name": "sudhir",
+    	"phone": "9304785634",
+    	"eUid": "we12",
+    	"relation": "father"
+	}
+}
+
+{
+	"firstName": "sud",
+	"lastName": "kumar",
+	"userName": "sud191",
+	"password": "sud123",
+	"age": "26",
+	"sex": "male",
+	"address": "BTM",
+	"uniqueId": "qwg124",
+	"emergencyContact": {
+    	"name": "sudhir",
+    	"phone": "9304785634",
+    	"eUid": "wep123",
+    	"relation": "father"
+	}
+}
+--------------------------------------------------------
+doctor:
+{	"name": "Arun Tiwari",
+    "userName": "a.tiwari",
+    "password": "abc123",
+    "email": "arun@gmail.com",
+    "phone": "8742983627",
+    "speciality": "physician",
+    "fee": 200,
+    "availabilityTimes": "10:00-16:00"
+}
+{	
+	"name": "Vinay Prasad",
+    "userName": "v.prasad",
+    "password": "abcd1234",
+    "email": "vinay@gmail.com",
+    "phone": "8742983609",
+    "speciality": "physician",
+    "fee": 500,
+    "availabilityTimes": "10:00-16:00"
+}
+------------------------------------------------
+nurse:
+{	
+	"name": "Sujata Kumari",
+    "userName": "sujata123",
+    "password": "abcd1234",
+    "email": "sujata@gmail.com",
+    "phone": "9842983609"
+}
+----------------------------------------------------
+admin:
+{	
+	"name": "Sudhanshu Kumar",
+    "userName": "admin",
+    "password": "admin"
+}
+
+
+
+
+
+
+
+{	"aptDate": "2019-05-26",
+    "doctor": "5ce52ac412d5c80a78984d4c",
+    "patient": "5ce4df18b29bff29689e9dc8",
+    "type": "meeting",
+    "status": "pending",
+    "createdBy": "5ce543750b1e583da4eca21d"
+}
+
+
+
+{	
+    "appointment": "5ce65fc46560095bbc3651e1",
+    "items": [{
+    	"item": "m1",
+    	"price": "200"
+    },
+    {
+    	"item": "m2",
+    	"price": "250"	
+    }],
+    "total": 450,
+    "status": "pending"
+}
+
+visits
+{
+	"appointment": "sudhana191",
+	"diagnosedBy": "a.tiwari",
+	"nursedBy": "sujata123"
+}
