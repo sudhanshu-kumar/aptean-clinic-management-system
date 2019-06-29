@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Redirect, Link } from "react-router-dom";
 import axios from "axios";
-//import TableRow from "./TableRow";
+import TableRow from "./TableRow";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 class Index extends Component {
@@ -11,7 +11,9 @@ class Index extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:3001/api/patients")
+      .get("http://localhost:3001/api/patients", {
+        headers: { authorization: `Bearer ${sessionStorage.getItem("user")}` }
+      })
       .then(response => {
         console.log(response.data);
         this.setState({ patients: response.data });
@@ -21,31 +23,24 @@ class Index extends Component {
       });
   }
 
-  deletePatient = event => {
+  deletePatient = id => {
     axios
-      .delete("http://localhost:3001/api/patients/" + event.target.id)
+      .delete("http://localhost:3001/api/patients/" + id)
       .then(res => {
         console.log(res.data);
       })
       .then(() => {
-        axios
-          .get("http://localhost:3001/api/patients")
-          .then(response => {
-            console.log(response.data);
-            this.setState({ patients: response.data });
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+        const patients = this.state.patients.filter(patient => patient._id !== id);
+        this.setState({ patients });
       })
       .catch(err => console.log(err));
   };
 
-  // tabRow = () => {
-  //   return this.state.patients.map(function(object, i) {
-  //     return <TableRow obj={object} key={i} />;
-  //   });
-  // };
+  tabRow = () => {
+    return this.state.patients.map((object, i) => {
+      return <TableRow obj={object} key={i} onDelete={this.deletePatient}/>;
+    });
+  };
 
   render() {
     if (
@@ -79,40 +74,7 @@ class Index extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.patients.map(function(object, i) {
-                  return (
-                    <div>
-                      <tr key={i}>
-                        <td>{object.firstName}</td>
-                        <td>{object.lastName}</td>
-                        <td>{object.userName}</td>
-                        <td>{object.age}</td>
-                        <td>{object.sex}</td>
-                        <td>{object.address}</td>
-                        <td>{object.eName}</td>
-                        <td>{object.ePhone}</td>
-                        <td>{object.relation}</td>
-                        <td>
-                          <Link
-                            to={"/admin/patients/edit/" + object._id}
-                            className="btn btn-primary"
-                          >
-                            Edit
-                          </Link>
-                        </td>
-                        <td>
-                          <button
-                            id={object._id}
-                            onClick={this.deletePatient}
-                            className="btn btn-danger"
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    </div>
-                  );
-                })}
+                { this.tabRow() }
               </tbody>
             </table>
           </div>

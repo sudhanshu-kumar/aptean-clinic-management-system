@@ -13,9 +13,10 @@ class AdminHome extends Component {
     this.setState({ user: null });
   };
   componentDidMount() {
-
     axios
-      .get(`http://localhost:3001/api/admin`, { headers: { authorization: `Bearer ${sessionStorage.getItem("user")}` } })
+      .get(`http://localhost:3001/api/admin`, {
+        headers: { authorization: `Bearer ${sessionStorage.getItem("user")}` }
+      })
       .then(res => {
         console.log(res.data);
         this.setState({ user: res.data });
@@ -23,7 +24,10 @@ class AdminHome extends Component {
   }
   render() {
     console.log(this.props);
-    if (sessionStorage.getItem("user") && sessionStorage.getItem("type") === "admin") {
+    if (
+      sessionStorage.getItem("user") &&
+      sessionStorage.getItem("type") === "admin"
+    ) {
       return (
         <div>
           <div className="admin-head">
@@ -32,15 +36,17 @@ class AdminHome extends Component {
               LogOut
             </button>
           </div>
-          <Link to="/admin/patients">
-            <button className="btn btn-primary">Manage Paients</button>
-          </Link>
-          <Link to="/admin/doctors">
-            <button className="btn btn-primary">Manage Doctors</button>
-          </Link>
-          <Link to="/admin/nurses">
-            <button className="btn btn-primary">Manage Nurses</button>
-          </Link>
+          <div className="buttons">
+            <Link to="/admin/patients">
+              <button className="btn btn-primary">Manage Paients</button>
+            </Link>
+            <Link to="/admin/doctors">
+              <button className="btn btn-primary">Manage Doctors</button>
+            </Link>
+            <Link to="/admin/nurses">
+              <button className="btn btn-primary">Manage Nurses</button>
+            </Link>
+          </div>
         </div>
       );
     } else {

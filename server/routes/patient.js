@@ -1,15 +1,17 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const patientObj = require("../module-controllers/patient");
+const { verifyToken } = require("../middlewares/auth");
 const BCRYPT_SALT_ROUNDS = 10;
 
 const app = express.Router();
 
 // =================Get All Patients======================
-app.get("/api/patients", async (request, response) => {
+app.get("/api/patients", verifyToken, async (request, response) => {
   try {
     const patients = await patientObj.getPatients();
-    console.log("sds");
+    console.log(patients);
     if (patients.length > 0) response.json(patients);
     else response.status(404).send("no patient found");
   } catch (err) {
@@ -43,8 +45,15 @@ app.post("/api/patients", async (request, response) => {
 //= =================Get Patient By Id========================
 app.get("/api/patients/:patientId", async (request, response) => {
   try {
+    let decoded = {}
+      try {
+        decoded = jwt.verify(request.params.patientId, "key");
+        //console.log(decoded)
+
+      } catch(err) { response.sendStatus(403) }
+      console.log(decoded.patientId)
     const patient = await patientObj
-      .getPatientById(request.params.patientId)
+      .getPatientById(decoded.patientId)
       .catch(() => {
         response.status(404).send("Requested id not found");
       });

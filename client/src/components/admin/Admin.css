@@ -2,3 +2,18 @@
     display: flex;
     justify-content: space-around;
 }
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 4em auto;
+    width: fit-content;
+    height: 20em;
+}
+
+.buttons button {
+    width: 20em;
+    height: 5em;
+}

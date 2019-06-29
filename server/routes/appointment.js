@@ -1,4 +1,5 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const appointmentObj = require("../module-controllers/appointment");
 const doctorObj = require("../module-controllers/doctor");
 const patientObj = require("../module-controllers/patient");
@@ -74,8 +75,15 @@ app.get("/api/appointments/:appointmentId", async (request, response) => {
 //= =================Get Appointment By Patient========================
 app.get("/api/appointments/patient/:patient", async (request, response) => {
   try {
+    let decoded = {}
+      try {
+        decoded = jwt.verify(request.params.patient, "key");
+        //console.log(decoded)
+
+      } catch(err) { response.sendStatus(403) }
+      console.log(decoded.patientId)
     const appointment = await appointmentObj
-      .getAppointmentByPatient(request.params.patient)
+      .getAppointmentByPatient(decoded.patientId)
       .catch(() => {
         response.status(404).send("Requested id not found");
       });

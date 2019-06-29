@@ -63,7 +63,13 @@ app.post("/api/login", async (request, response) => {
         patient.password
       );
       if (!samePassword) response.status(403).send("password incorrect");
-      response.json(patient);
+      jwt.sign({patientId: patient._id}, 'key', (err, token) => {
+        response.json({
+          token,
+          user: patient
+        });
+      });
+      //response.json(patient);
     }
   } catch (err) {
     response.status(500).send("Something went wrong, please try again..!!!");

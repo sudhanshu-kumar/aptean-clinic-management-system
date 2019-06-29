@@ -21,9 +21,22 @@ class Index extends Component {
       });
   }
 
+  deleteNurse = id => {
+    axios
+      .delete("http://localhost:3001/api/nurses/" + id)
+      .then(res => {
+        console.log(res.data);
+      })
+      .then(() => {
+        const nurses = this.state.nurses.filter(nurse => nurse._id !== id);
+        this.setState({ nurses });
+      })
+      .catch(err => console.log(err));
+  };
+
   tabRow() {
-    return this.state.nurses.map(function(object, i) {
-      return <TableRow obj={object} key={i} />;
+    return this.state.nurses.map((object, i) => {
+      return <TableRow obj={object} key={i} onDelete={this.deleteNurse} />;
     });
   }
 
@@ -35,7 +48,7 @@ class Index extends Component {
       return (
         <div>
           <div className="container">
-            <h2>Admin Nurse Index</h2>
+            <h2 align="center">Admin Nurse Index</h2>
             <Link to={`/admin/${sessionStorage.getItem("user")}`}>
               <button className="btn btn-primary">Back To Home</button>
             </Link>
